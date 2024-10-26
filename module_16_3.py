@@ -18,7 +18,6 @@ async def create_user(
         username: Annotated[str, Path(min_length=2, max_length=20, description='Enter username', example='Mat')],
         age: Annotated[int, Path(ge=18, le=100, description='Enter age', example='18')]) -> str:
     next_user_id = str(int(max(users, key=int)) + 1)   # идентификатор для нового пользователя
-    print(next_user_id)
     users[next_user_id] = f'Имя: {username}, возраст: {age}'
     return f'User {next_user_id} is registered'
 
