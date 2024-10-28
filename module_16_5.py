@@ -23,12 +23,12 @@ class User(BaseModel):    # класс(модель) User, наследован�
 
 
 @app.get('/')
-def get_all_users(request: Request) -> HTMLResponse:
+async def get_all_users(request: Request) -> HTMLResponse:
     return templates.TemplateResponse('users.html', {'request': request, 'users': users})
 
 
 @app.get('/user/{user_id}')
-def get_user(request: Request,
+async def get_user(request: Request,
              user_id: Annotated[int, Path(ge=1, le=1000, description='Enter ID user', example='3')]) -> HTMLResponse:
     for user in users:
         if user.id == user_id:
@@ -37,7 +37,7 @@ def get_user(request: Request,
 
 
 @app.post('/user/{username}/{age}')
-def create_user(
+async def create_user(
         username: Annotated[str, Path(min_length=2, max_length=20, description='Enter username', example='Mat')],
         age: Annotated[int, Path(ge=18, le=100, description='Enter age', example='18')]) -> User:
     if not users:
@@ -50,7 +50,7 @@ def create_user(
 
 
 @app.put('/user/{user_id}/{username}/{age}')
-def update_user(
+async def update_user(
         user_id: Annotated[int, Path(ge=1, le=1000, description='Enter ID user', example='3')],
         username: Annotated[str, Path(min_length=2, max_length=20, description='Enter username', example='Mat')],
         age: Annotated[int, Path(ge=18, le=100, description='Enter age', example='18')]) -> User:
@@ -63,7 +63,7 @@ def update_user(
 
 
 @app.delete('/user/{user_id}')
-def delete_user(user_id: Annotated[int, Path(ge=1, le=1000, description='Enter ID user', example='3')]) -> User:
+async def delete_user(user_id: Annotated[int, Path(ge=1, le=1000, description='Enter ID user', example='3')]) -> User:
     for user in users:
         if user.id == user_id:
             index_found_user = users.index(user)
